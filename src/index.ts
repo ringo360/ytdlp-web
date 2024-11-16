@@ -1,9 +1,12 @@
-import { Hono } from 'hono'
+import { Hono } from 'hono';
+import { serveStatic } from 'hono/bun';
+import api from './api';
 
-const app = new Hono()
+const app = new Hono();
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+app.use('/files/*', serveStatic({ root: './' }));
+app.use('/', serveStatic({ root: './' }));
 
-export default app
+app.route('/v1', api);
+
+export default app;
